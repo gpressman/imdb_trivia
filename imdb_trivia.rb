@@ -14,7 +14,15 @@ end
 
 post '/results' do
   searched = Imdb::Search.new(params[:trivia_search])
-  @movies=searched.movies.sample(9)
+  movies_with_poster= []
+  searched.movies.each do |movie|
+    if movies_with_poster.length<9 && movie.poster != nil
+      movies_with_poster.push(movie)
+    end
+  end
+
+  @movies=movies_with_poster
+
   #binding.pry
   erb :results
 end
